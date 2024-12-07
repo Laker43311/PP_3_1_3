@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<form th:method="get" th:actoin="@{/admin/new}" th:object="${user}">
+
+    <div style="color: red" th:errors="*{name}">Name errors</div>
+    <div style="color: red" th:errors="*{surname}">Surname errors</div>
+    <div style="color: red" th:errors="*{age}">Age errors</div>
+    <div style="color: red" th:errors="*{email}">Email errors</div>
+    <a href="/admin">Admin page</a>
+</form>
+</body>
+</html>
