@@ -33,7 +33,6 @@ public class Init {
         admin.setPassword("$2y$10$/U6KKct8hIyqVNr/WunfSeF80nj1r9eAPQCzenwtdTwnsQRNXJNmG"); //adminpass
         admin.setEmail("Vova123@mail.com");
         admin.setSurname("AdminSurname");
-        admin.setAge((byte) 20);
         admin.setRoles(Collections.singleton(roleAdmin));
         userRepository.save(admin);
 
@@ -42,7 +41,6 @@ public class Init {
         user.setPassword("$2y$10$4Ym0Nxq6OyzFyMDyX0ploOPrt4CxicXqBdRypQ4VY/QvDbo/LYdsW");  //userpass
         user.setEmail("Vasya123@mail.com");
         user.setSurname("UserSurname");
-        user.setAge((byte) 18);
         user.setRoles(Collections.singleton(roleUser));
         userRepository.save(user);
     }

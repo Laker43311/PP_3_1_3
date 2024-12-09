@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
 import javax.validation.Valid;
@@ -17,27 +17,27 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final UserValidator userValidator;
 
     @Autowired
-    public AdminController(UserService userService, UserValidator userValidator) {
-        this.userService = userService;
+    public AdminController(UserServiceImpl userServiceImpl, UserValidator userValidator) {
+        this.userServiceImpl = userServiceImpl;
         this.userValidator = userValidator;
     }
 
     @GetMapping("")
-    public String adminPage(Model model, Principal principal) {
-        model.addAttribute("currentUser", userService.findByUsername(principal.getName()));
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("roles", userService.getAllRoles());
+    public String showAdminPage(Model model, Principal principal) {
+        model.addAttribute("currentUser", userServiceImpl.findByUsername(principal.getName()));
+        model.addAttribute("users", userServiceImpl.getAllUsers());
+        model.addAttribute("roles", userServiceImpl.getAllRoles());
         model.addAttribute("newUser", new User());
         return "admin";
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", userService.getAllRoles());
+    public String addNewUser(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roles", userServiceImpl.getAllRoles());
         return "admin";
     }
 
@@ -48,14 +48,14 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "errorValidation";
         }
-        userService.addUser(user);
+        userServiceImpl.addUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("roles", userService.getAllRoles());
+    public String editUser(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userServiceImpl.getUserById(id));
+        model.addAttribute("roles", userServiceImpl.getAllRoles());
         return "admin";
     }
 
@@ -67,13 +67,13 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "errorValidation";
         }
-        userService.updateUser(id, user);
+        userServiceImpl.updateUser(id, user);
         return "redirect:/admin";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userService.deleteUser(id);
+        userServiceImpl.deleteUser(id);
         return "redirect:/admin";
     }
 }
